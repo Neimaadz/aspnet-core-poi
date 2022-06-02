@@ -28,12 +28,12 @@ namespace EvaluationApi.Controllers
         }
 
         // TODO
-        // GET: api/PointOfInterestItems/5
-        // [HttpGet("{id}")]
-        /* 
+        //GET: api/PointOfInterestItems/5
+        [HttpGet("{id}")]
+         
         public async Task<ActionResult<PointOfInterestItem>> GetPointOfInterestItem(long id)
         {
-            var pointOfInterestItem = await _context.PointOfInterestsItems.FindAsync(id);
+            var pointOfInterestItem = _repository.GetById(id);
 
             if (pointOfInterestItem == null)
             {
@@ -41,7 +41,7 @@ namespace EvaluationApi.Controllers
             }
 
             return pointOfInterestItem;
-        }*/
+        }
 
         // TODO
         // PUT: api/PointOfInterestItems/5
@@ -91,20 +91,17 @@ namespace EvaluationApi.Controllers
 
         // TODO
         // DELETE: api/PointOfInterestItems/5
-        /*[HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<PointOfInterestItem>> DeletePointOfInterestItem(long id)
         {
-            var pointOfInterestItem = await _context.PointOfInterestsItems.FindAsync(id);
+            var pointOfInterestItem = _repository.DeleteById(id);
             if (pointOfInterestItem == null)
             {
                 return NotFound();
             }
 
-            _context.PointOfInterestsItems.Remove(pointOfInterestItem);
-            await _context.SaveChangesAsync();
-
             return pointOfInterestItem;
-        }*/
+        }
 
         // TODO
         /*private bool PointOfInterestItemExists(long id)
