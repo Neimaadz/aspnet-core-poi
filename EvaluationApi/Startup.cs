@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +33,8 @@ namespace EvaluationApi
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "POI-App", Version = "v1" });
             });
 
-            services.AddDbContext<PointOfInterestContext>(opt =>
-                opt.UseInMemoryDatabase("POI-Liste"));
+            services.AddTransient<IPointOfInterestsRepository, PointOfInterestsRepository>();
+
             services.AddControllers();
         }
 

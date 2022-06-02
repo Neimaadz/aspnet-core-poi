@@ -13,22 +13,24 @@ namespace EvaluationApi.Controllers
     [ApiController]
     public class PointOfInterestItemsController : ControllerBase
     {
-        private readonly PointOfInterestContext _context;
+        private readonly IPointOfInterestsRepository _repository;
 
-        public PointOfInterestItemsController(PointOfInterestContext context)
+        public PointOfInterestItemsController(IPointOfInterestsRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET: api/PointOfInterestItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PointOfInterestItem>>> GetPointOfInterestsItems()
+        public ActionResult<IEnumerable<PointOfInterestItem>> GetPointOfInterestsItems()
         {
-            return await _context.PointOfInterestsItems.ToListAsync();
+            return _repository.GetAll();
         }
 
+        // TODO
         // GET: api/PointOfInterestItems/5
-        [HttpGet("{id}")]
+        // [HttpGet("{id}")]
+        /* 
         public async Task<ActionResult<PointOfInterestItem>> GetPointOfInterestItem(long id)
         {
             var pointOfInterestItem = await _context.PointOfInterestsItems.FindAsync(id);
@@ -39,12 +41,13 @@ namespace EvaluationApi.Controllers
             }
 
             return pointOfInterestItem;
-        }
+        }*/
 
+        // TODO
         // PUT: api/PointOfInterestItems/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
+        /*[HttpPut("{id}")]
         public async Task<IActionResult> PutPointOfInterestItem(long id, PointOfInterestItem pointOfInterestItem)
         {
             if (id != pointOfInterestItem.Id)
@@ -71,22 +74,24 @@ namespace EvaluationApi.Controllers
             }
 
             return NoContent();
-        }
+        }*/
 
+        // TODO
         // POST: api/PointOfInterestItems
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
+        /*[HttpPost]
         public async Task<ActionResult<PointOfInterestItem>> PostPointOfInterestItem(PointOfInterestItem pointOfInterestItem)
         {
             _context.PointOfInterestsItems.Add(pointOfInterestItem);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetPointOfInterestItem", new { id = pointOfInterestItem.Id }, pointOfInterestItem);
-        }
+        }*/
 
+        // TODO
         // DELETE: api/PointOfInterestItems/5
-        [HttpDelete("{id}")]
+        /*[HttpDelete("{id}")]
         public async Task<ActionResult<PointOfInterestItem>> DeletePointOfInterestItem(long id)
         {
             var pointOfInterestItem = await _context.PointOfInterestsItems.FindAsync(id);
@@ -99,11 +104,12 @@ namespace EvaluationApi.Controllers
             await _context.SaveChangesAsync();
 
             return pointOfInterestItem;
-        }
+        }*/
 
-        private bool PointOfInterestItemExists(long id)
+        // TODO
+        /*private bool PointOfInterestItemExists(long id)
         {
             return _context.PointOfInterestsItems.Any(e => e.Id == id);
-        }
+        }*/
     }
 }
