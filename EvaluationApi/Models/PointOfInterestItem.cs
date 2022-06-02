@@ -11,6 +11,7 @@ namespace EvaluationApi.Models
         public string name { get; set; }
         public string imagePath { get; set; }
         public string comment { get; set; }
-        public string localization { get; set; }
+        public double lat { get; set; }
+        public double lng { get; set; }
     }
 }
