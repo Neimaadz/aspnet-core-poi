@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EvaluationApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EvaluationApi.Controllers
 {
-    [Route("api/poi")]
+    [Route("api/poi/")]
     [ApiController]
+    //[Authorize] // Decomment this to restrict only for connected user
     public class PointOfInterestItemsController : ControllerBase
     {
         private readonly PointOfInterestContext _context;
