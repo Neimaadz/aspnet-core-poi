@@ -21,9 +21,10 @@ namespace EvaluationApi
 {
     public class Startup
     {
+        public IConfiguration _configuration { get; set; }
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -36,6 +37,16 @@ namespace EvaluationApi
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "POI-App", Version = "v1" });
             });
 
+            // Service de connexion à la bdd 
+            var connectionString = _configuration.GetConnectionString("Default");
+
+            var serverVersion = new MariaDbServerVersion(new Version(10, 1, 45));
+
+            services.AddDbContext<PointOfInterestContext>(
+               DbContextOptions => DbContextOptions
+                    .UseMySql(connectionString, serverVersion));
+
+            // Service d'authentification 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -55,7 +66,9 @@ namespace EvaluationApi
 
             services.AddDbContext<PointOfInterestContext>(opt =>
                 opt.UseInMemoryDatabase("POI-Liste"));
+
             services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
