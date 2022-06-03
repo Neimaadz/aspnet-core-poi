@@ -15,16 +15,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EvaluationApi
 {
     public class Startup
     {
-        public IConfiguration _configuration { get; set; }
         public Startup(IConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -37,8 +35,8 @@ namespace EvaluationApi
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "POI-App", Version = "v1" });
             });
 
-            // Service de connexion à la bdd 
-            var connectionString = _configuration.GetConnectionString("Default");
+            // Service de connexion a la bdd
+            var connectionString = Configuration.GetConnectionString("Default");
 
             var serverVersion = new MariaDbServerVersion(new Version(10, 1, 45));
 
@@ -68,7 +66,6 @@ namespace EvaluationApi
                 opt.UseInMemoryDatabase("POI-Liste"));
 
             services.AddControllers();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,7 +87,9 @@ namespace EvaluationApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
