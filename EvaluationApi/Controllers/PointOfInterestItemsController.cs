@@ -12,12 +12,12 @@ namespace EvaluationApi.Controllers
 {
     [Route("api/poi/")]
     [ApiController]
-    //[Authorize] // Decomment this to restrict only for connected user
+    [Authorize] // Decomment this to restrict only for connected user
     public class PointOfInterestItemsController : ControllerBase
     {
-        private readonly PointOfInterestContext _context;
+        private readonly AppDbContext _context;
 
-        public PointOfInterestItemsController(PointOfInterestContext context)
+        public PointOfInterestItemsController(AppDbContext context)
         {
             _context = context;
         }
