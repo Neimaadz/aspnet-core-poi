@@ -40,7 +40,7 @@ namespace EvaluationApi
 
             var serverVersion = new MariaDbServerVersion(new Version(10, 1, 45));
 
-            services.AddDbContext<PointOfInterestContext>(
+            services.AddDbContext<AppDbContext>(
                DbContextOptions => DbContextOptions
                     .UseMySql(connectionString, serverVersion));
 
@@ -60,10 +60,9 @@ namespace EvaluationApi
                     };
                 });
 
-            services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<IAuthService, AuthService>();
 
-            services.AddDbContext<PointOfInterestContext>(opt =>
-                opt.UseInMemoryDatabase("POI-Liste"));
+            services.AddCors();
 
             services.AddControllers();
         }
@@ -91,6 +90,13 @@ namespace EvaluationApi
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseEndpoints(endpoints =>
             {

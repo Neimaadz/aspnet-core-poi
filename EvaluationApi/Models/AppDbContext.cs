@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace EvaluationApi.Models
 {
-    public class PointOfInterestContext : DbContext
+    public class AppDbContext : DbContext
     {
-        public PointOfInterestContext(DbContextOptions<PointOfInterestContext> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
 
         public DbSet<PointOfInterestItem> PointOfInterestsItems { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }
