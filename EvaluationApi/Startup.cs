@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -33,6 +34,8 @@ namespace EvaluationApi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "POI-App", Version = "v1" });
+                var filePath = Path.Combine(AppContext.BaseDirectory, "Api.xml");
+                c.IncludeXmlComments(filePath);
             });
 
             // Service de connexion a la bdd

@@ -21,7 +21,6 @@ namespace EvaluationApi.Controllers
         {
             _context = context;
         }
-
         // GET: api/PointOfInterestItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PointOfInterestItem>>> GetPointOfInterestsItems()
@@ -29,6 +28,12 @@ namespace EvaluationApi.Controllers
             return await _context.PointOfInterestsItems.ToListAsync();
         }
 
+        /// <summary>
+        /// This the summary
+        /// </summary>
+        /// <param name="id">This is a param Id</param>
+        /// <returns>This the returned</returns>
+        /// <remarks>This is a remarks</remarks>
         // GET: api/PointOfInterestItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PointOfInterestItem>> GetPointOfInterestItem(long id)
