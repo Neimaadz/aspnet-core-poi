@@ -14,15 +14,6 @@ namespace EvaluationApi.Models
         public double Lat { get; set; }
         public double Lng { get; set; }
 
-        public PointOfInterestItem(long Id, string Name, string ImagePath, string Comment, double Lat, double Lng)
-        {
-            this.Id = Id;
-            this.Name = Name;
-            this.ImagePath = ImagePath;
-            this.Comment = Comment;
-            this.Lat = Lat;
-            this.Lng = Lng;
-        }
         public PointOfInterestItem(string Name, string ImagePath, string Comment, double Lat, double Lng)
         {
             this.Name = Name;

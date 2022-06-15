@@ -83,7 +83,8 @@ namespace EvaluationApi.Controllers
                 relativePathFileName = Path.Combine(relativePath, fileName);
             }else relativePathFileName = oldPointOfInterestItem.ImagePath;
 
-            pointOfInterestItem = new PointOfInterestItem(pointOfInterestItemDTO.Id ,pointOfInterestItemDTO.Name, relativePathFileName, pointOfInterestItemDTO.Comment, pointOfInterestItemDTO.Lat, pointOfInterestItemDTO.Lng);
+            pointOfInterestItem = new PointOfInterestItem(pointOfInterestItemDTO.Name, relativePathFileName, pointOfInterestItemDTO.Comment, pointOfInterestItemDTO.Lat, pointOfInterestItemDTO.Lng);
+            pointOfInterestItem.Id = pointOfInterestItemDTO.Id;
 
             _context.Entry(oldPointOfInterestItem).State = EntityState.Detached; // Détache l'objet qui attaché au contexte
             _context.Entry(pointOfInterestItem).State = EntityState.Modified;
