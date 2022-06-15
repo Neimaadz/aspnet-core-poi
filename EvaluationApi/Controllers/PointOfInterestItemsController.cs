@@ -55,22 +55,22 @@ namespace EvaluationApi.Controllers
                 return BadRequest();
             }
 
-            //Si une image est renseignée on delete l'ancienne image sinon on garde juste l'ancienne
+            // Si une image est renseignée on delete l'ancienne image sinon on garde juste l'ancienne
             PointOfInterestItem pointOfInterestItem;
             string relativePathFileName;
             var oldPointOfInterestItem = await _context.PointOfInterestsItems.FindAsync(id);
             if (pointOfInterestItemDTO.Image != null)
             {
+                // Vérification de l'extension
+                FileInfo fileInfo = new FileInfo(pointOfInterestItemDTO.Image.FileName);
+                string fileExtension = fileInfo.Extension;
+                if (fileExtension != ".jpg" || fileExtension != ".jpeg" || fileExtension != ".png") { return BadRequest("extension"); }
+                
                 // Delete old image
                 string imagePath = Path.Combine(Directory.GetCurrentDirectory(), oldPointOfInterestItem.ImagePath);
                 if (System.IO.File.Exists(imagePath)) System.IO.File.Delete(imagePath);
 
                 // Import new image
-
-                FileInfo fileInfo = new FileInfo(pointOfInterestItemDTO.Image.FileName);
-                string fileExtension = fileInfo.Extension;
-                if (fileExtension != ".jpg") { return BadRequest("extension"); }
-
                 string relativePath = "Ressources/Images";
                 string absolutePath = Path.Combine(Directory.GetCurrentDirectory(), relativePath);
                 if (!Directory.Exists(absolutePath)) Directory.CreateDirectory(absolutePath);
@@ -116,7 +116,7 @@ namespace EvaluationApi.Controllers
             // Get file extension
             FileInfo fileInfo = new FileInfo(pointOfInterestItemDTO.Image.FileName);
             string fileExtension = fileInfo.Extension;
-            if (fileExtension != ".jpg") { return BadRequest("extension"); }
+            if (fileExtension != ".jpg" || fileExtension != ".jpeg" || fileExtension != ".png") { return BadRequest("extension"); }
 
             // Path and create folder if not exist
             string relativePath = "Ressources/Images";
