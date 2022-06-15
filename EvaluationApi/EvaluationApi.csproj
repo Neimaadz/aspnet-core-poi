@@ -34,6 +34,7 @@
     <None Remove="BCrypt.Net-Next" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Ressources\Images\" />
     <Folder Include="Services\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>

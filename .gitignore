@@ -791,3 +791,5 @@ $RECYCLE.BIN/
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,visualstudio,csharp,windows,nwjs,aspnetcore
+
+EvaluationApi/Ressources/
