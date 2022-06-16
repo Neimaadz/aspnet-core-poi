@@ -18,6 +18,13 @@ namespace EvaluationApi.Controllers
     {
         private readonly AppDbContext _context;
 
+        private readonly List<string> extensions = new List<string>()
+        {
+            ".png",
+            ".jpeg",
+            ".jpg",
+        };
+
         public PointOfInterestItemsController(AppDbContext context)
         {
             _context = context;
@@ -64,8 +71,8 @@ namespace EvaluationApi.Controllers
                 // Vérification de l'extension
                 FileInfo fileInfo = new FileInfo(pointOfInterestItemDTO.Image.FileName);
                 string fileExtension = fileInfo.Extension;
-                if (fileExtension != ".jpg" || fileExtension != ".jpeg" || fileExtension != ".png") { return BadRequest("extension"); }
-                
+                if (!this.extensions.Contains(fileExtension)) { return BadRequest("file-not-right-extension"); }
+
                 // Delete old image
                 string imagePath = Path.Combine(Directory.GetCurrentDirectory(), oldPointOfInterestItem.ImagePath);
                 if (System.IO.File.Exists(imagePath)) System.IO.File.Delete(imagePath);
@@ -81,7 +88,8 @@ namespace EvaluationApi.Controllers
                 pointOfInterestItemDTO.Image.CopyTo(stream);
 
                 relativePathFileName = Path.Combine(relativePath, fileName);
-            }else relativePathFileName = oldPointOfInterestItem.ImagePath;
+            }
+            else relativePathFileName = oldPointOfInterestItem.ImagePath;
 
             pointOfInterestItem = new PointOfInterestItem(pointOfInterestItemDTO.Name, relativePathFileName, pointOfInterestItemDTO.Comment, pointOfInterestItemDTO.Lat, pointOfInterestItemDTO.Lng);
             pointOfInterestItem.Id = pointOfInterestItemDTO.Id;
@@ -117,14 +125,14 @@ namespace EvaluationApi.Controllers
             // Get file extension
             FileInfo fileInfo = new FileInfo(pointOfInterestItemDTO.Image.FileName);
             string fileExtension = fileInfo.Extension;
-            if (fileExtension != ".jpg" || fileExtension != ".jpeg" || fileExtension != ".png") { return BadRequest("extension"); }
+            if (!this.extensions.Contains(fileExtension)) { return BadRequest("file-not-right-extension"); }
 
             // Path and create folder if not exist
             string relativePath = "Ressources/Images";
             string absolutePath = Path.Combine(Directory.GetCurrentDirectory(), relativePath);
             if (!Directory.Exists(absolutePath)) Directory.CreateDirectory(absolutePath);
 
-            string fileName = Utils.RandomString(20,true) + fileExtension;
+            string fileName = Utils.RandomString(20, true) + fileExtension;
 
             using var stream = new FileStream(Path.Combine(absolutePath, fileName), FileMode.Create);
             pointOfInterestItemDTO.Image.CopyTo(stream);
