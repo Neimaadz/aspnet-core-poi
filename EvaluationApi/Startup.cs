@@ -72,7 +72,8 @@ namespace EvaluationApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var environmentVar = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var environmentVar = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentVariableTarget.User);
+            Console.WriteLine(environmentVar);
             if (environmentVar == "Production")
             {
                 var prodCurrentWorkingDirectory = Configuration["ProdCurrentWorkingDirectory"];
