@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EvaluationApi</name>
+    </assembly>
+    <members>
+        <member name="M:EvaluationApi.Controllers.PointOfInterestItemsController.GetPointOfInterestsItems">
+            <summary>
+            Get all POIs
+            </summary>
+            <returns>All POIs from the database</returns>
+            <remarks>This function allows to get all POIs from the database</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.PointOfInterestItemsController.GetPointOfInterestItem(System.Int64)">
+            <summary>
+            Get a POI by ID
+            </summary>
+            <param name="id">The ID associated to the POI</param>
+            <returns>Returns the POI associated to the ID</returns>
+            <remarks>This function allows to get a POI via its ID</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.PointOfInterestItemsController.PutPointOfInterestItem(System.Int64,EvaluationApi.Models.PointOfInterestItemDTO)">
+            <summary>
+            Update a POI by ID
+            </summary>
+            <param name="id">The ID associated to the POI</param>
+            <returns>HTTP code</returns>
+            <remarks>This function allows to update a POI via its ID</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.PointOfInterestItemsController.PostPointOfInterestItem(EvaluationApi.Models.PointOfInterestItemDTO)">
+            <summary>
+            Create a POI
+            </summary>
+            <returns>HTTP code</returns>
+            <remarks>This function allows to create a POI with its parameters</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.PointOfInterestItemsController.DeletePointOfInterestItem(System.Int64)">
+            <summary>
+            Delete a POI by ID
+            </summary>
+            <param name="id">The ID associated to the POI</param>
+            <returns>HTTP code</returns>
+            <remarks>This function allows to delete a POI via its ID</remarks>
+        </member>
+        <member name="T:EvaluationApi.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:EvaluationApi.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:EvaluationApi.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>

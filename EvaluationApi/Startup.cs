@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace EvaluationApi
@@ -35,6 +36,9 @@ namespace EvaluationApi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "POI-App", Version = "v1" });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, "Api.xml");
+                c.IncludeXmlComments(xmlPath);
             });
 
             // Service de connexion a la bdd
