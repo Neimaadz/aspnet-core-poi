@@ -32,7 +32,7 @@ namespace EvaluationApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var environmentVar = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var environmentVar = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentVariableTarget.Machine);
             if (environmentVar == "Production")
             {
                 var prodCurrentWorkingDirectory = Configuration["ProdCurrentWorkingDirectory"];
