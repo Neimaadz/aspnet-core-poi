@@ -32,6 +32,14 @@ namespace EvaluationApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var environmentVar = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT ");
+            if (environmentVar == "Production")
+            {
+                var prodCurrentWorkingDirectory = Configuration["ProdCurrentWorkingDirectory"];
+                Directory.SetCurrentDirectory(prodCurrentWorkingDirectory);
+                if (!Directory.Exists(prodCurrentWorkingDirectory + "/Ressources")) Directory.CreateDirectory(prodCurrentWorkingDirectory + "/Ressources");
+            }
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "POI-App", Version = "v1" });
@@ -72,12 +80,6 @@ namespace EvaluationApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.EnvironmentName == "Production")
-            {
-                var prodCurrentWorkingDirectory = Configuration["ProdCurrentWorkingDirectory"];
-                Directory.SetCurrentDirectory(prodCurrentWorkingDirectory);
-                if (!Directory.Exists(prodCurrentWorkingDirectory + "/Ressources")) Directory.CreateDirectory(prodCurrentWorkingDirectory + "/Ressources");
-            }
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
