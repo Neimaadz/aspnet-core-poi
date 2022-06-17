@@ -73,10 +73,9 @@ namespace EvaluationApi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var environmentVar = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            Console.WriteLine(environmentVar);
             if (environmentVar == "Production")
             {
-                var prodCurrentWorkingDirectory = Environment.GetEnvironmentVariable("HOME") + "\\site\\wwwroot\\";
+                var prodCurrentWorkingDirectory = Environment.GetEnvironmentVariable("HOME") + "/site/wwwroot";
                 Directory.SetCurrentDirectory(prodCurrentWorkingDirectory);
                 if (!Directory.Exists(prodCurrentWorkingDirectory + "/Ressources")) Directory.CreateDirectory(prodCurrentWorkingDirectory + "/Ressources");
             }
