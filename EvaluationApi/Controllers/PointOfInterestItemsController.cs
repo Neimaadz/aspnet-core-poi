@@ -30,6 +30,11 @@ namespace EvaluationApi.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Get all POIs
+        /// </summary>
+        /// <returns>All POIs from the database</returns>
+        /// <remarks>This function allows to get all POIs from the database</remarks>
         // GET: api/PointOfInterestItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PointOfInterestItem>>> GetPointOfInterestsItems()
@@ -37,6 +42,12 @@ namespace EvaluationApi.Controllers
             return await _context.PointOfInterestsItems.ToListAsync();
         }
 
+        /// <summary>
+        /// Get a POI by ID
+        /// </summary>
+        /// <param name="id">The ID associated to the POI</param>
+        /// <returns>Returns the POI associated to the ID</returns>
+        /// <remarks>This function allows to get a POI via its ID</remarks>
         // GET: api/PointOfInterestItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PointOfInterestItem>> GetPointOfInterestItem(long id)
@@ -51,9 +62,13 @@ namespace EvaluationApi.Controllers
             return pointOfInterestItem;
         }
 
+        /// <summary>
+        /// Update a POI by ID
+        /// </summary>
+        /// <param name="id">The ID associated to the POI</param>
+        /// <returns>HTTP code</returns>
+        /// <remarks>This function allows to update a POI via its ID</remarks>
         // PUT: api/PointOfInterestItems/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPointOfInterestItem(long id, [FromForm] PointOfInterestItemDTO pointOfInterestItemDTO)
         {
@@ -116,9 +131,12 @@ namespace EvaluationApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Create a POI
+        /// </summary>
+        /// <returns>HTTP code</returns>
+        /// <remarks>This function allows to create a POI with its parameters</remarks>
         // POST: api/PointOfInterestItems
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<PointOfInterestItemDTO>> PostPointOfInterestItem([FromForm] PointOfInterestItemDTO pointOfInterestItemDTO)
         {
@@ -145,6 +163,12 @@ namespace EvaluationApi.Controllers
             return CreatedAtAction("GetPointOfInterestItem", new { id = pointOfInterestItem.Id }, pointOfInterestItem);
         }
 
+        /// <summary>
+        /// Delete a POI by ID
+        /// </summary>
+        /// <param name="id">The ID associated to the POI</param>
+        /// <returns>HTTP code</returns>
+        /// <remarks>This function allows to delete a POI via its ID</remarks>
         // DELETE: api/PointOfInterestItems/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<PointOfInterestItem>> DeletePointOfInterestItem(long id)
