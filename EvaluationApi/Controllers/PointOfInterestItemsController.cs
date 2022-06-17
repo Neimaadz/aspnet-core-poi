@@ -39,7 +39,6 @@ namespace EvaluationApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PointOfInterestItem>>> GetPointOfInterestsItems()
         {
-            Console.WriteLine(Directory.GetCurrentDirectory());
             return await _context.PointOfInterestsItems.ToListAsync();
         }
 
