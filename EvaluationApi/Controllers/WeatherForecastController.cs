@@ -26,7 +26,8 @@ namespace EvaluationApi.Controllers
         /// <summary>
         /// Get the WeatherForecast
         /// </summary>
-        /// <returns>Here we return the weather</returns>
+        /// <returns>HTTP code
+        /// </returns>
         /// <remarks></remarks>
 
         [HttpGet]

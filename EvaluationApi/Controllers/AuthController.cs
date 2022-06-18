@@ -24,9 +24,9 @@ namespace EvaluationApi.Controllers
         }
 
         /// <summary>
-        /// Authentification Login
+        /// We verify the connexion here and return if authorized or not
         /// </summary>
-        /// <returns>We verify the connexion here and return if authorized or not</returns>
+        /// <returns>HTTP code</returns>
         /// <remarks>Basic post auth for the login</remarks>
 
         // POST: api/auth/login
@@ -49,9 +49,9 @@ namespace EvaluationApi.Controllers
 
 
         /// <summary>
-        /// Register section
+        /// Here we register our username and password
         /// </summary>
-        /// <returns>Here we register our username and password</returns>
+        /// <returns>HTTP code</returns>
         /// <remarks>The api verify if the user are already use or not</remarks>
         // POST: api/auth/register
         [HttpPost("register")]
