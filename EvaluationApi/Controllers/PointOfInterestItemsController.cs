@@ -91,7 +91,7 @@ namespace EvaluationApi.Controllers
         }
 
         /// <summary>
-        /// Create a POIs
+        /// Create a POI
         /// </summary>
         /// <returns>HTTP code</returns>
         /// <remarks>This function allows to create a POI with its parameters</remarks>
