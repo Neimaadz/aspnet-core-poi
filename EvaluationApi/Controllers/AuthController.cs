@@ -23,6 +23,12 @@ namespace EvaluationApi.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Authentification Login
+        /// </summary>
+        /// <returns>We verify the connexion here and return if authorized or not</returns>
+        /// <remarks>Basic post auth for the login</remarks>
+
         // POST: api/auth/login
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserLogin userLogin)
@@ -41,6 +47,12 @@ namespace EvaluationApi.Controllers
             return Unauthorized("Username or password invalid");
         }
 
+
+        /// <summary>
+        /// Register section
+        /// </summary>
+        /// <returns>Here we register our username and password</returns>
+        /// <remarks>The api verify if the user are already use or not</remarks>
         // POST: api/auth/register
         [HttpPost("register")]
         public IActionResult Register(User newUser)
