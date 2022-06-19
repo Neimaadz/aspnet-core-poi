@@ -3,20 +3,14 @@ using EvaluationApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace EvaluationApi
@@ -66,7 +60,8 @@ namespace EvaluationApi
                     };
                 });
 
-            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<AuthService>();
+            services.AddTransient<PointOfInterestItemService>();
 
             services.AddCors();
 
@@ -83,6 +78,7 @@ namespace EvaluationApi
                 Directory.SetCurrentDirectory(prodCurrentWorkingDirectory);
                 if (!Directory.Exists(prodCurrentWorkingDirectory + "/Ressources")) Directory.CreateDirectory(prodCurrentWorkingDirectory + "/Ressources");
             }
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
@@ -94,14 +90,17 @@ namespace EvaluationApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Ressources")),
+                RequestPath = "/Ressources",
+                EnableDefaultFiles = true
+            });
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
 
             // global cors policy
             app.UseCors(x => x
@@ -110,16 +109,13 @@ namespace EvaluationApi
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials()); // allow credentials
 
+            app.UseAuthentication();
+
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-            app.UseFileServer(new FileServerOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "Ressources")),
-                RequestPath = "/Ressources",
-                EnableDefaultFiles = true
             });
         }
     }

@@ -2,20 +2,16 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using EvaluationApi.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using BC = BCrypt.Net.BCrypt;
 
 namespace EvaluationApi.Services
 {
-    public class AuthService : IAuthService
+    public class AuthService
     {
         private IConfiguration _config;
         private readonly AppDbContext _context;
@@ -82,7 +78,8 @@ namespace EvaluationApi.Services
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Username),
+                new Claim("id", user.Id.ToString()),
+                new Claim("username", user.Username),
                 new Claim(ClaimTypes.Role, user.Role)
             };
 

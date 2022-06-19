@@ -8,7 +8,7 @@ namespace EvaluationApi.Models
         public string Name { get; set; }
         public IFormFile Image { get; set; }
         public string Comment { get; set; }
-        public double Lat { get; set; }
-        public double Lng { get; set; }
+        public string Lat { get; set; }
+        public string Lng { get; set; }
     }
 }
