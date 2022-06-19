@@ -23,6 +23,13 @@ namespace EvaluationApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Get the WeatherForecast
+        /// </summary>
+        /// <returns>HTTP code
+        /// </returns>
+        /// <remarks></remarks>
+
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
