@@ -1,14 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using EvaluationApi.Models;
 using EvaluationApi.Services;
-using System.Net;
-using System.Net.Http;
 
 namespace EvaluationApi.Controllers
 {
@@ -16,9 +8,9 @@ namespace EvaluationApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private IAuthService _service;
+        private AuthService _service;
 
-        public AuthController(IAuthService service)
+        public AuthController(AuthService service)
         {;
             _service = service;
         }

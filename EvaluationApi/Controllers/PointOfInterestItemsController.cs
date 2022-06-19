@@ -1,33 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using EvaluationApi.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.IO;
+using EvaluationApi.Services;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace EvaluationApi.Controllers
 {
     [Route("api/poi/")]
     [ApiController]
-    //[Authorize] // Decomment this to restrict only for connected user
+    [Authorize] // Decomment this to restrict only for connected user
     public class PointOfInterestItemsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private PointOfInterestItemService _service;
 
-        private readonly List<string> extensions = new List<string>()
+        public PointOfInterestItemsController(PointOfInterestItemService service)
         {
-            ".png",
-            ".jpeg",
-            ".jpg",
-        };
-
-        public PointOfInterestItemsController(AppDbContext context)
-        {
-            _context = context;
+            _service = service;
         }
 
         /// <summary>
@@ -37,9 +28,10 @@ namespace EvaluationApi.Controllers
         /// <remarks>This function allows to get all POIs from the database</remarks>
         // GET: api/PointOfInterestItems
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<PointOfInterestItem>>> GetPointOfInterestsItems()
         {
-            return await _context.PointOfInterestsItems.ToListAsync();
+            return Ok(await _service.GetPointOfInterestItems());
         }
 
         /// <summary>
@@ -50,16 +42,17 @@ namespace EvaluationApi.Controllers
         /// <remarks>This function allows to get a POI via its ID</remarks>
         // GET: api/PointOfInterestItems/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<PointOfInterestItem>> GetPointOfInterestItem(long id)
         {
-            var pointOfInterestItem = await _context.PointOfInterestsItems.FindAsync(id);
+            var pointOfInterestItem = await _service.GetPointOfInterestItem(id);
 
             if (pointOfInterestItem == null)
             {
                 return NotFound();
             }
 
-            return pointOfInterestItem;
+            return Ok(pointOfInterestItem);
         }
 
         /// <summary>
@@ -70,65 +63,20 @@ namespace EvaluationApi.Controllers
         /// <remarks>This function allows to update a POI via its ID</remarks>
         // PUT: api/PointOfInterestItems/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPointOfInterestItem(long id, [FromForm] PointOfInterestItemDTO pointOfInterestItemDTO)
+        public async Task<IActionResult> PutPointOfInterestItem([FromRoute] long id, [FromForm] PointOfInterestItemDTO pointOfInterestItemDTO)
         {
-            if (id != pointOfInterestItemDTO.Id)
-            {
-                return BadRequest();
-            }
-
-            // Si une image est renseignée on delete l'ancienne image sinon on garde juste l'ancienne
-            PointOfInterestItem pointOfInterestItem;
-            string relativePathFileName;
-            var oldPointOfInterestItem = await _context.PointOfInterestsItems.FindAsync(id);
-            if (pointOfInterestItemDTO.Image != null)
-            {
-                // Vérification de l'extension
-                FileInfo fileInfo = new FileInfo(pointOfInterestItemDTO.Image.FileName);
-                string fileExtension = fileInfo.Extension;
-                if (!this.extensions.Contains(fileExtension)) { return BadRequest("file-not-right-extension"); }
-
-                // Delete old image
-                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), oldPointOfInterestItem.ImagePath);
-                if (System.IO.File.Exists(imagePath)) System.IO.File.Delete(imagePath);
-
-                // Import new image
-                string relativePath = "Ressources/Images";
-                string absolutePath = Path.Combine(Directory.GetCurrentDirectory(), relativePath);
-                if (!Directory.Exists(absolutePath)) Directory.CreateDirectory(absolutePath);
-
-                string fileName = Utils.RandomString(20, true) + fileExtension;
-
-                using var stream = new FileStream(Path.Combine(absolutePath, fileName), FileMode.Create);
-                pointOfInterestItemDTO.Image.CopyTo(stream);
-
-                relativePathFileName = Path.Combine(relativePath, fileName);
-            }
-            else relativePathFileName = oldPointOfInterestItem.ImagePath;
-
-            pointOfInterestItem = new PointOfInterestItem(pointOfInterestItemDTO.Name, relativePathFileName, pointOfInterestItemDTO.Comment, pointOfInterestItemDTO.Lat, pointOfInterestItemDTO.Lng);
-            pointOfInterestItem.Id = pointOfInterestItemDTO.Id;
-
-            _context.Entry(oldPointOfInterestItem).State = EntityState.Detached; // Détache l'objet qui attaché au contexte
-            _context.Entry(pointOfInterestItem).State = EntityState.Modified;
+            long currentUserId = long.Parse(User.FindFirst("id").Value);
 
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PointOfInterestItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                PointOfInterestItem pointOfInterestItem = await _service.GetUserPointOfInterestItem(id, currentUserId);
 
-            return NoContent();
+                return Ok(await _service.PutPointOfInterestItem(id, pointOfInterestItemDTO, pointOfInterestItem, currentUserId));
+            }
+            catch
+            {
+                return Forbid();
+            }
         }
 
         /// <summary>
@@ -140,25 +88,8 @@ namespace EvaluationApi.Controllers
         [HttpPost]
         public async Task<ActionResult<PointOfInterestItemDTO>> PostPointOfInterestItem([FromForm] PointOfInterestItemDTO pointOfInterestItemDTO)
         {
-            // Get file extension
-            FileInfo fileInfo = new FileInfo(pointOfInterestItemDTO.Image.FileName);
-            string fileExtension = fileInfo.Extension;
-            if (!this.extensions.Contains(fileExtension)) { return BadRequest("file-not-right-extension"); }
-
-            // Path and create folder if not exist
-            string relativePath = "Ressources/Images";
-            string absolutePath = Path.Combine(Directory.GetCurrentDirectory(), relativePath);
-            if (!Directory.Exists(absolutePath)) Directory.CreateDirectory(absolutePath);
-
-            string fileName = Utils.RandomString(20, true) + fileExtension;
-
-            using var stream = new FileStream(Path.Combine(absolutePath, fileName), FileMode.Create);
-            pointOfInterestItemDTO.Image.CopyTo(stream);
-
-            PointOfInterestItem pointOfInterestItem = new PointOfInterestItem(pointOfInterestItemDTO.Name, Path.Combine(relativePath, fileName), pointOfInterestItemDTO.Comment, pointOfInterestItemDTO.Lat, pointOfInterestItemDTO.Lng);
-
-            _context.PointOfInterestsItems.Add(pointOfInterestItem);
-            await _context.SaveChangesAsync();
+            long currentUserId = long.Parse(User.FindFirst("id").Value);
+            PointOfInterestItem pointOfInterestItem = await _service.PostPointOfInterestItem(pointOfInterestItemDTO, currentUserId);
 
             return CreatedAtAction("GetPointOfInterestItem", new { id = pointOfInterestItem.Id }, pointOfInterestItem);
         }
@@ -173,21 +104,20 @@ namespace EvaluationApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<PointOfInterestItem>> DeletePointOfInterestItem(long id)
         {
-            var pointOfInterestItem = await _context.PointOfInterestsItems.FindAsync(id);
-            if (pointOfInterestItem == null) return NotFound();
+            long currentUserId = long.Parse(User.FindFirst("id").Value);
+            PointOfInterestItem pointOfInterestItem;
+            try
+            {
+                pointOfInterestItem = await _service.GetUserPointOfInterestItem(id, currentUserId);
+                pointOfInterestItem = await _service.DeletePointOfInterestItem(pointOfInterestItem);
 
-            string imagePath = Path.Combine(Directory.GetCurrentDirectory(), pointOfInterestItem.ImagePath);
-            if (System.IO.File.Exists(imagePath)) System.IO.File.Delete(imagePath);
-
-            _context.PointOfInterestsItems.Remove(pointOfInterestItem);
-            await _context.SaveChangesAsync();
-
-            return pointOfInterestItem;
+                return Ok(pointOfInterestItem);
+            }
+            catch
+            {
+                return Forbid();
+            }
         }
 
-        private bool PointOfInterestItemExists(long id)
-        {
-            return _context.PointOfInterestsItems.Any(e => e.Id == id);
-        }
     }
 }
