@@ -35,6 +35,20 @@ namespace EvaluationApi.Controllers
         }
 
         /// <summary>
+        /// Get all POIs without trip
+        /// </summary>
+        /// <returns>All POIs without trip (tripId = 0) from the database</returns>
+        /// <remarks>This function allows to get all POIs without trip from the database</remarks>
+        // GET: api/poi/notrip
+        [HttpGet("notrip")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<PointOfInterestItem>>> GetUserPointOfInterestsItemsWithoutTrip()
+        {
+            long currentUserId = long.Parse(User.FindFirst("id").Value);
+            return Ok(await _service.GetUserPointOfInterestsItemsWithoutTrip(currentUserId));
+        }
+
+        /// <summary>
         /// Get a POI by ID
         /// </summary>
         /// <param name="id">The ID associated to the POI</param>

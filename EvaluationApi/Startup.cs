@@ -62,6 +62,7 @@ namespace EvaluationApi
 
             services.AddTransient<AuthService>();
             services.AddTransient<PointOfInterestItemService>();
+            services.AddTransient<TripService>();
 
             services.AddCors();
 
