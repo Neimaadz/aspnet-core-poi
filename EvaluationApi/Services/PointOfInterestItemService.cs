@@ -22,6 +22,10 @@ namespace EvaluationApi.Services
         {
             return await _context.PointOfInterestsItems.ToListAsync();
         }
+        public async Task<IEnumerable<PointOfInterestItem>> GetUserPointOfInterestsItemsWithoutTrip(long currentUserId)
+        {
+            return await _context.PointOfInterestsItems.Where(poi => poi.UserId == currentUserId && poi.TripId == 0).ToListAsync();
+        }
         public async Task<PointOfInterestItem> GetPointOfInterestItem(long id)
         {
             try

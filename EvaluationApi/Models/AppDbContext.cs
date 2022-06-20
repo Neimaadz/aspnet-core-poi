@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EvaluationApi.Models;
 
 namespace EvaluationApi.Models
 {
@@ -15,5 +16,6 @@ namespace EvaluationApi.Models
 
         public DbSet<PointOfInterestItem> PointOfInterestsItems { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Trip> Trips { get; set; }
     }
 }

@@ -4,12 +4,33 @@
         <name>EvaluationApi</name>
     </assembly>
     <members>
+        <member name="M:EvaluationApi.Controllers.AuthController.Login(EvaluationApi.Models.UserLogin)">
+            <summary>
+            We verify the connexion here and return if authorized or not
+            </summary>
+            <returns>HTTP code</returns>
+            <remarks>Basic post auth for the login</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.AuthController.Register(EvaluationApi.Models.User)">
+            <summary>
+            Here we register our username and password
+            </summary>
+            <returns>HTTP code</returns>
+            <remarks>The api verify if the user are already use or not</remarks>
+        </member>
         <member name="M:EvaluationApi.Controllers.PointOfInterestItemsController.GetPointOfInterestsItems">
             <summary>
             Get all POIs
             </summary>
             <returns>All POIs from the database</returns>
             <remarks>This function allows to get all POIs from the database</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.PointOfInterestItemsController.GetUserPointOfInterestsItemsWithoutTrip">
+            <summary>
+            Get all POIs without trip
+            </summary>
+            <returns>All POIs without trip (tripId = 0) from the database</returns>
+            <remarks>This function allows to get all POIs without trip from the database</remarks>
         </member>
         <member name="M:EvaluationApi.Controllers.PointOfInterestItemsController.GetPointOfInterestItem(System.Int64)">
             <summary>
@@ -41,6 +62,63 @@
             <param name="id">The ID associated to the POI</param>
             <returns>HTTP code</returns>
             <remarks>This function allows to delete a POI via its ID</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.TripsController.GetTrip">
+            <summary>
+            Get all Trips
+            </summary>
+            <returns>a List of all Trips</returns>
+            <remarks>This function call the database to get all trips</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.TripsController.GetTripOriginDestination(System.String,System.String)">
+            <summary>
+            Get all Trips defined by origin and destination
+            </summary>
+            <param name="origin">The origin</param>
+            <param name="destination">The destination</param>
+            <returns>a List of all Trips filtered by origin and destination</returns>
+            <remarks>This function call the database to get all trips</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.TripsController.GetTrip(System.Int64)">
+            <summary>
+            Get a trip by id
+            </summary>
+            <param name="id">The id of trip</param>
+            <returns>a signle trip by id else http.code 400</returns>
+            <remarks>This function call the database to get one trip by id</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.TripsController.PutTrip(System.Int64,EvaluationApi.Models.TripDTO)">
+            <summary>
+            Update a trip by id
+            </summary>
+            <param name="id">The id of trip</param>
+            <param name="tripDTO">The payload to update</param>
+            <returns>http.code 200 else http.code 403</returns>
+            <remarks>This function update the trip</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.TripsController.PostTrip(EvaluationApi.Models.TripDTO)">
+            <summary>
+            Post a new trip
+            </summary>
+            <param name="tripDTO">The payload to update</param>
+            <returns>The trip added</returns>
+            <remarks>This function add a trip</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.TripsController.DeleteTrip(System.Int64)">
+            <summary>
+            delete a trip by id
+            </summary>
+            <param name="id">The id of trip to delete</param>
+            <returns>http.code 200 with trip info deleted else http.code 403</returns>
+            <remarks>This function delete a trip</remarks>
+        </member>
+        <member name="M:EvaluationApi.Controllers.WeatherForecastController.Get">
+            <summary>
+            Get the WeatherForecast
+            </summary>
+            <returns>HTTP code
+            </returns>
+            <remarks></remarks>
         </member>
         <member name="T:EvaluationApi.Properties.Resources">
             <summary>

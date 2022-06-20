@@ -9,6 +9,7 @@ namespace EvaluationApi.Models
     {
         public long Id { get; set; }
         public long UserId { get; set; }
+        public long TripId { get; set; }
         public string Name { get; set; }
         public string ImagePath { get; set; }
         public string Comment { get; set; }
